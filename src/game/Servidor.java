@@ -126,17 +126,14 @@ public class Servidor extends Thread{
             System.out.println("Successful connection, starting proccessing...");
             while(true){
                 sleep(Game.REFRESH_INTERVAL);
-                //System.out.println("Sending game status to client...");
                 GameStatus sendGameStatus = new GameStatus(game);
-                //System.out.println(sendGameStatus);
                 output.writeObject(sendGameStatus);
-                //System.out.println("Sent game status to client!");
                 output.reset();
                 //Jogo terminou, parar de enviar
                 if(game.isGameOver()){
                     break;
                 }
-                if(input.ready()){
+                if(input.ready() && player.getCurrentStrength() < 10){
                     String directionReceived = input.readLine();
                     System.out.println("DIRECTION RECEIVED !!! " + directionReceived);
                     player.move(Direction.valueOf(directionReceived));
@@ -145,9 +142,7 @@ public class Servidor extends Thread{
         }
 
         private void closeConnection() {
-            /*
-            Varios try catches de modo a que caso de erro a fechar um ainda fecha os outros
-             */
+
             try{
                 input.close();
             }catch (IOException e){

@@ -30,7 +30,6 @@ import javax.swing.JComponent;
 public class BoardJComponent extends JComponent implements KeyListener {
 	private Game game;
 	private List<Player> playerList;
-	private Cell[][] board;
 	private final Image obstacleImage = new ImageIcon("obstacle.png").getImage();
 	private final Image humanPlayerImage= new ImageIcon("abstract-user-flat.png").getImage();
 	private Direction lastPressedDirection=null;
@@ -58,18 +57,6 @@ public class BoardJComponent extends JComponent implements KeyListener {
 		setFocusable(true);
 		addKeyListener(this);
 	}
-
-	public BoardJComponent(Cell[][] board, int LEFT, int RIGHT, int UP, int DOWN){
-		this.board = board;
-		this.customKeys = true;
-		this.LEFT = LEFT;
-		this.RIGHT = RIGHT;
-		this.UP = UP;
-		this.DOWN = DOWN;
-		setFocusable(true);
-		addKeyListener(this);
-	}
-
 
 	@Override
 	protected void paintComponent(Graphics g) {

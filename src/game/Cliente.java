@@ -1,12 +1,13 @@
 package game;
 
 import environment.Direction;
-import gui.ClientGUI;
-
+import gui.BoardJComponent;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
+
+import javax.swing.JFrame;
 
 
 public class Cliente{
@@ -77,7 +78,9 @@ public class Cliente{
             GameStatus receivedGameStatus = (GameStatus) input.readObject();
             System.out.println("Recebi status");
             StringBuilder debug = new StringBuilder(receivedGameStatus.toString());
+            System.out.println("Aqui aqui aqui!");
             for(Player p : receivedGameStatus.getPlayerList()){
+                System.out.println("Entrei no ciclo for!s");
                 debug.append(" ").append(p.getCurrentCell());
                 System.out.println("Status player" + p);
             }
@@ -132,6 +135,48 @@ public class Cliente{
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public class ClientGUI {
+        private final JFrame frame;
+        private final BoardJComponent boardGui;
+    
+        public ClientGUI(List<Player> playerList, int LEFT, int RIGHT, int UP, int DOWN) {
+            super();
+            frame = new JFrame("Cliente");
+            boardGui = new BoardJComponent(playerList, LEFT, RIGHT, UP, DOWN);
+            buildGui();
+        }
+    
+        private void buildGui() {
+            frame.add(boardGui);
+            frame.setSize(800,800);
+            frame.setLocation(0, 150);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }
+    
+        public void updateGameStatus(List<Player> playerList){
+            boardGui.setPlayerList(playerList);
+            boardGui.repaint();
+        }
+    
+        public BoardJComponent getBoardJComponent() {
+            return boardGui;
+        }
+    
+        public void init()  {
+            frame.setVisible(true);
+    
+            // Demo players, should be deleted
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    
+    
     }
 
 }

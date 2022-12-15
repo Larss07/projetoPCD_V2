@@ -21,9 +21,10 @@ public class AutoPlayer extends Player implements Runnable {
     public void move() {
         Cell currcell = super.getCurrentCell(); /* vai buscar a celula atual */
         Coordinate position = currcell.getPosition(); /* vai buscar a posição atual */
+        System.out.println("Posição atual " + position + " do player " + currcell.getPlayer());
         Direction vector = Direction.randomDirection(); /* recebe uma direção aleatoria */
         Coordinate newPosition = position.translate(vector.getVector()); /* posição para a qual se quer mover */
-
+        System.out.println("Posição nova " + newPosition + " do player " + currcell.getPlayer());
         if (newPosition.x >= 0 && newPosition.x < Game.DIMX-1 && newPosition.y >= 0 && newPosition.y < Game.DIMY-1) { /* se esta estiver dentro dos limites do board */
             currcell.moveTo(game.getCell(newPosition));
             game.notifyChange();

@@ -44,6 +44,7 @@ public class Cell implements Serializable {
 		if (nextCell.getPlayer() == null) { //se a proxima célula estiver vazia, avança e fica na próxima célula
 			nextCell.setPlayer(this.player);
 			this.setPlayer(null);
+			
 		}
 		else if (isBlocked()) /* se a proxima célula tem um obstáculo, dorme e permanece na mesma célula */
 			try {
