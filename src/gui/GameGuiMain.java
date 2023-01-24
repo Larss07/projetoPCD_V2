@@ -23,12 +23,12 @@ public class GameGuiMain implements Observer {
 	private void buildGui() {
 		boardGui = new BoardJComponent(game);
 		frame.add(boardGui);
-		frame.setSize(800,800);
+		frame.setSize(800, 800);
 		frame.setLocation(0, 150);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	public void init()  {
+	public void init() {
 		frame.setVisible(true);
 
 		// Demo players, should be deleted

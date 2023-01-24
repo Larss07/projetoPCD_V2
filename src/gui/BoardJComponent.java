@@ -1,6 +1,4 @@
 package gui;
-
-import environment.Cell;
 import environment.Coordinate;
 import environment.Direction;
 import game.Game;
@@ -19,11 +17,15 @@ import javax.swing.JComponent;
 
 /**
  * Creates a JComponent to display the game state.
- * At the same time, this is also a KeyListener for itself: when a key is pressed,
- * attribute lastPressedDirection is updated accordingly. This feature is a demo to
- * better understand how to deal with keys pressed, useful for the remote client.
+ * At the same time, this is also a KeyListener for itself: when a key is
+ * pressed,
+ * attribute lastPressedDirection is updated accordingly. This feature is a demo
+ * to
+ * better understand how to deal with keys pressed, useful for the remote
+ * client.
  * This feature is not helpful for the main application and should be ignored.
  * This class does not need to be edited.
+ * 
  * @author luismota
  *
  */
@@ -31,14 +33,13 @@ public class BoardJComponent extends JComponent implements KeyListener {
 	private Game game;
 	private List<Player> playerList;
 	private final Image obstacleImage = new ImageIcon("obstacle.png").getImage();
-	private final Image humanPlayerImage= new ImageIcon("abstract-user-flat.png").getImage();
-	private Direction lastPressedDirection=null;
+	private final Image humanPlayerImage = new ImageIcon("abstract-user-flat.png").getImage();
+	private Direction lastPressedDirection = null;
 	private final boolean customKeys;
 	private int LEFT;
 	private int RIGHT;
 	private int UP;
 	private int DOWN;
-
 
 	public BoardJComponent(Game game) {
 		this.game = game;
@@ -47,7 +48,7 @@ public class BoardJComponent extends JComponent implements KeyListener {
 		addKeyListener(this);
 	}
 
-	public BoardJComponent(List<Player> playerList, int LEFT, int RIGHT, int UP, int DOWN){
+	public BoardJComponent(List<Player> playerList, int LEFT, int RIGHT, int UP, int DOWN) {
 		this.playerList = playerList;
 		this.customKeys = true;
 		this.LEFT = LEFT;
@@ -61,25 +62,25 @@ public class BoardJComponent extends JComponent implements KeyListener {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		double cellHeight=getHeight()/(double)Game.DIMY;
-		double cellWidth=getWidth()/(double)Game.DIMX;
+		double cellHeight = getHeight() / (double) Game.DIMY;
+		double cellWidth = getWidth() / (double) Game.DIMX;
 
 		for (int y = 1; y < Game.DIMY; y++) {
-			g.drawLine(0, (int)(y * cellHeight), getWidth(), (int)(y* cellHeight));
+			g.drawLine(0, (int) (y * cellHeight), getWidth(), (int) (y * cellHeight));
 		}
 		for (int x = 1; x < Game.DIMX; x++) {
-			g.drawLine( (int)(x * cellWidth),0, (int)(x* cellWidth), getHeight());
+			g.drawLine((int) (x * cellWidth), 0, (int) (x * cellWidth), getHeight());
 		}
 
 		for (int x = 0; x < Game.DIMX; x++) {
 			for (int y = 0; y < Game.DIMY; y++) {
 				Player player = null;
 				Coordinate p = new Coordinate(x, y);
-				if(!customKeys){
+				if (!customKeys) {
 					player = game.getCell(p).getPlayer();
-				}else {
+				} else {
 					for (Player ply : playerList) {
-						if(ply.getCurrentCell().getPosition().equals(p))
+						if (ply.getCurrentCell().getPosition().equals(p))
 							player = ply;
 					}
 				}
@@ -110,7 +111,8 @@ public class BoardJComponent extends JComponent implements KeyListener {
 					((Graphics2D) g).setStroke(new BasicStroke(5));
 					Font font = g.getFont().deriveFont((float) cellHeight);
 					g.setFont(font);
-					String strengthMarking = (player.getCurrentStrength() == 10 ? "X" : "" + player.getCurrentStrength());
+					String strengthMarking = (player.getCurrentStrength() == 10 ? "X"
+							: "" + player.getCurrentStrength());
 					g.drawString(strengthMarking,
 							(int) ((p.x + .2) * cellWidth),
 							(int) ((p.y + .9) * cellHeight));
@@ -120,17 +122,14 @@ public class BoardJComponent extends JComponent implements KeyListener {
 		}
 	}
 
-
-
 	public void setPlayerList(List<Player> playerList) {
 		this.playerList = playerList;
 	}
 
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		if(!customKeys){
+		if (!customKeys) {
 			switch (keyCode) {
 				case KeyEvent.VK_LEFT -> {
 					System.out.println("PRESSED LEFT");
@@ -149,33 +148,32 @@ public class BoardJComponent extends JComponent implements KeyListener {
 					lastPressedDirection = Direction.DOWN;
 				}
 			}
-		}else{
-			if(keyCode == UP){
+		} else {
+			if (keyCode == UP) {
 				System.out.println("PRESSED UP");
-				lastPressedDirection=environment.Direction.UP;
+				lastPressedDirection = environment.Direction.UP;
 				return;
 			}
-			if(keyCode == DOWN){
+			if (keyCode == DOWN) {
 				System.out.println("PRESSED DOWN");
-				lastPressedDirection=environment.Direction.DOWN;
+				lastPressedDirection = environment.Direction.DOWN;
 				return;
 			}
-			if(keyCode == RIGHT){
+			if (keyCode == RIGHT) {
 				System.out.println("PRESSED RIGHT");
-				lastPressedDirection=environment.Direction.RIGHT;
+				lastPressedDirection = environment.Direction.RIGHT;
 				return;
 			}
-			if(keyCode == LEFT) {
+			if (keyCode == LEFT) {
 				System.out.println("PRESSED LEFT");
-				lastPressedDirection=environment.Direction.LEFT;
+				lastPressedDirection = environment.Direction.LEFT;
 			}
 		}
 	}
 
-
 	@Override
 	public void keyReleased(KeyEvent e) {
-		//ignore
+		// ignore
 	}
 
 	@Override
@@ -188,6 +186,6 @@ public class BoardJComponent extends JComponent implements KeyListener {
 	}
 
 	public void clearLastPressedDirection() {
-		lastPressedDirection=null;
+		lastPressedDirection = null;
 	}
 }

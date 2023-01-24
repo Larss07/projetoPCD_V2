@@ -1,6 +1,5 @@
 package game;
 import java.io.Serializable;
-import java.util.concurrent.CountDownLatch;
 
 import environment.Cell;
 
@@ -15,21 +14,18 @@ public abstract class Player implements Serializable {
 	private byte currentStrength;
 	protected byte originalStrength;
 	public Cell cell;
-	protected CountDownLatch cdl;
 
 	// It is already getting the player position from data in game!
 	public Cell getCurrentCell() {
 		return game.findMe(this);
 	}
 
-	public Player(int id, Game game, byte strength, CountDownLatch cdl) {
+	public Player(int id, Game game, byte strength) {
 		super();
 		this.id = id;
 		this.game = game;
 		currentStrength = strength;
 		originalStrength = strength;
-		this.cdl = cdl;
-		// game.addPlayerToGame(this); // é o player que se auto-adiciona ao jogo
 	}
 
 	public abstract boolean isHumanPlayer();
@@ -38,14 +34,14 @@ public abstract class Player implements Serializable {
 	public void setCurrentStrength(byte strength) {
 		currentStrength = (byte)(Math.min(strength, 10)); //Não é necessário ser o mínimo, mas contamos com 10 sendo a energia máxima que o player pode ter
 		if(currentStrength == 10) {
-			cdl.countDown();
-			System.out.println("COUNTDOWNLATCH ----------" + cdl.getCount());
+			game.cdl.countDown();
+			System.out.println("COUNTDOWNLATCH ----------" + game.cdl.getCount());
 		}
 	}
 
 	@Override
 	public String toString() {
-		return "Player [id=" + id + ", currentStrength=" + currentStrength + ", getCurrentCell()=" + getCurrentCell() + "]";
+		return "player [id=" + id + ", currentStrength=" + currentStrength + ", getCurrentCell()=" + getCurrentCell() + "]";
 	}
 
 	@Override

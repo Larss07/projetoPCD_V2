@@ -1,13 +1,10 @@
 import game.Cliente;
-
-import java.net.InetAddress;
+import game.Servidor;
 import java.net.UnknownHostException;
 
 public class ClientArrows {
     public static void main(String[] args) throws UnknownHostException {
-        Cliente client = new Cliente(InetAddress.getByName("localHost"), 2022,
-                37, 39, 38, 40);
+        Cliente client = new Cliente("127.0.0.1", Servidor.PORTO, false);
         client.runClient();
-        System.out.println(InetAddress.getByName("localHost"));
     }
 }
