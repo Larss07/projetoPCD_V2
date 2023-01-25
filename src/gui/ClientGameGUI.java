@@ -45,8 +45,4 @@ public class ClientGameGUI implements Observer {
 		return clientGame;
 	}
 
-	public static void main(String[] args) {
-		ClientGameGUI c = new ClientGameGUI(false);
-		c.init();
-	}
 }

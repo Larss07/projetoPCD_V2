@@ -58,8 +58,6 @@ public class Cliente {
 	private void interactWithServer() throws ClassNotFoundException, IOException {
 		while (true) {
 			GameStatus message = (GameStatus) in.readObject();
-			System.out.println(message);
-
 			clientGame.setMessage(message);
 			clientGame.notifyChange();
 

@@ -2,6 +2,8 @@ package environment;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import game.AutoPlayer;
 import game.Game;
 import game.Player;
 
@@ -9,8 +11,9 @@ public class Cell {
 	private Coordinate position;
 	private Game game;
 	private Player player = null; //células começam vazias
-	private Lock lock = new ReentrantLock(); //lock da célula
+	Lock lock = new ReentrantLock(); //lock da célula
 	private Condition isEmpty = lock.newCondition(); //condição do lock - se a célula está vazia
+	Condition canMove = lock.newCondition();
 
 	//Construtor
 	public Cell(Coordinate position,Game g) {
@@ -45,12 +48,12 @@ public class Cell {
 		try {
 			//só entra neste if e no while no inicio do jogo!! (porque depois só chega a esta função se entrar na 1ª condição do moveTo!)
 			if(isBlocked()) {
-				System.out.println("Eu, Player " + p.getIdentification() + " estou à espera de uma célula bloqueada xxxxxxxxxxxxxxxxxxxxxxx");
+				System.out.println("Eu, Player " + p.getIdentification() + " estou à espera de uma célula bloqueada (INICIO)");
 				game.getRandomCell().setPlayer(p);
 				return;
 			}
-			while(isOccupied()) {
-				System.out.println("ESTOU PARADO À ESPERA - Player " + p.getIdentification());
+			while(isOccupied() && !game.isGameOver()) {
+				System.out.println("ESTOU PARADO À ESPERA - Player " + p.getIdentification() + "DUMA CELULA OCUPADA (INICIO)");
 				isEmpty.await();
 			}
 			this.player = p;
@@ -83,13 +86,17 @@ public class Cell {
 			}
 
 			// 2ª possibilidade: player tenta mover-se para cima de um obstáculo
-			else if (isBlocked())
+			else if (nextCell.isBlocked() && (player instanceof AutoPlayer)) {
 				try {
-					Thread.sleep(Game.MAX_WAITING_TIME_FOR_MOVE);
+					//Thread.sleep(Game.MAX_WAITING_TIME_FOR_MOVE);
+					Thread contador = new OurAutoThread(this);
+					contador.start();
+					System.out.println("O " + player.toString() + " está a tentar mover-se contra um obstáculo!");
+					canMove.await();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-
+			}
 			// 3ª possibilidade: player confronta outro player vivo
 			else if(!nextCell.isBlocked() && nextCell.isOccupied())
 				fightWith(nextCell.getPlayer());

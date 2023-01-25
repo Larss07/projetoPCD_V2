@@ -79,9 +79,10 @@ public class Servidor extends Thread {
                 while (!game.isGameOver()) {
                     String direction;
                     direction = input.readLine();
-                    phoneyHumanPlayer.move(Direction.valueOf(direction));
+                    if (direction != null) {
+                        phoneyHumanPlayer.move(Direction.valueOf(direction));
+                    }
                 }
-                System.out.println("Game is over");
             } finally {
                 input.close();
                 output.close();
